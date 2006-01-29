@@ -6,12 +6,10 @@ use strict;
 use warnings;
 use lib 'lib';
 
-use Test::More tests => 6;
+use Test::More tests => 10;
 
 use XML::Atom::Syndication::Test::Util qw( get_feed );
 use XML::Atom::Syndication::Feed;
-use File::Spec;
-use FileHandle;
 
 my @cats = (
     ['entry_category_label.xml','label','Atom 1.0 tests'],
@@ -28,13 +26,12 @@ foreach my $c (@cats) {
     ok($cat->$meth eq $c->[2]);
 }
 
-__END__
-my $feed = get_feed('entry_category_multiple.xml');
+my $feed = get_feed('x-entry_category_multiple.xml');
 my @e = $feed->entries;
 my @cats2 = $e[0]->category;
 ok(@cats2 == 2);
 ok(ref $cats2[0] eq 'XML::Atom::Syndication::Category');
-ok($cats2[0]->name eq '');
-ok($cats2[1]->name eq '');
+ok($cats2[0]->label eq 'Atom 1.0 tests');
+ok($cats2[1]->label eq 'Atom 0.3 tests');
 
 1;
